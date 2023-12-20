@@ -45,7 +45,10 @@ const MovieListing = () => {
 
   return (
     <div className='container flex flex-col px-6 space-y-12 text-gray-200'>
-      <div className='container justify-center items-start flex flex-col gap-4'>
+      <div
+        ref={ref}
+        className='container justify-center items-start flex flex-col gap-4'
+      >
         <motion.h2
           variants={{
             hidden: { opacity: 0, y: 100 },
@@ -62,7 +65,6 @@ const MovieListing = () => {
           Action <span className='text-red-500'> Movies</span>
         </motion.h2>
         <motion.div
-          ref={ref}
           variants={{
             hidden: { opacity: 0, y: 100 },
             visible: { opacity: 1, y: 1 },

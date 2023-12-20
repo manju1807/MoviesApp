@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 // Sample data for slides
 const slides = [
@@ -9,6 +10,7 @@ const slides = [
     name: 'Game of thrones',
     description:
       'Epic battles, political intrigue, and dragons shape the fate of Westeros in this fantasy masterpiece.',
+    imdbID: 'tt0944947',
   },
   {
     id: 2,
@@ -17,6 +19,7 @@ const slides = [
     name: 'The Pirates of the Carribean',
     description:
       'Captain Jack Sparrow embarks on a swashbuckling adventure, encountering curses, treasure, and high seas antics.',
+    imdbID: 'tt1790809',
   },
   {
     id: 3,
@@ -25,6 +28,7 @@ const slides = [
     name: 'The Witcher',
     description:
       'Geralt of Rivia, a monster hunter, navigates a dark fantasy world filled with magic, monsters, and moral ambiguity.',
+    imdbID: 'tt5180504',
   },
   {
     id: 4,
@@ -33,6 +37,7 @@ const slides = [
     name: 'Money Heist',
     description:
       'A mastermind known as "The Professor" plans the perfect heist, orchestrating chaos and drama in this thrilling Spanish series.',
+    imdbID: 'tt6468322',
   },
   // Add more slide objects as needed
 ];
@@ -50,30 +55,40 @@ const HeroSection = () => {
     );
   };
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      handleNext();
+    }, 3000); // Change slide every 10 seconds
+    return () => clearInterval(intervalId); // Cleanup on component unmount
+  }, [currentSlide]);
+
   return (
     <div className='min-h-[70vh] relative container'>
-      <div id='slide' className='relative container'>
+      <div className='relative container'>
         {slides.map((slide, index) => (
           <div
             key={slide.id}
             className={`item ${
               index === currentSlide ? '' : 'hidden'
-            } w-[100%] h-[60vh] bg-cover container bg-center absolute transition-all ease-in-out duration-300 z-10`}
+            } w-[100%] h-[60vh] bg-cover container bg-center absolute transition ease-in-out duration-500 z-10`}
             style={{ backgroundImage: `url(${slide.image})` }}
           >
-            <div className='overlay absolute container inset-0 bg-gradient-to-r from-gray-900 via-transparent to-gray-900 z-10 opacity-50'></div>
-            <div className='overlay absolute container inset-0 bg-gradient-to-r from-gray-900 via-transparent to-gray-900 z-10 opacity-50'></div>
-            <div className='z-20 container absolute top-2/3 md:top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col justify-start px-4 md:px-6 space-y-2 text-white'>
-              <div className='text-3xl max-w-[70%] md:max-w-sm md:text-4xl z-20 font-semibold text-left'>
-                {slide.name}
+            {' '}
+            <Link to={`/movie/${slide.imdbID}`}>
+              <div className='overlay absolute container inset-0 bg-gradient-to-r from-gray-900 via-transparent to-gray-900 z-10 opacity-50'></div>
+              <div className='overlay absolute container inset-0 bg-gradient-to-r from-gray-900 via-transparent to-gray-900 z-10 opacity-50'></div>
+              <div className='z-20 container absolute top-2/3 md:top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col justify-start px-4 md:px-6 space-y-2 text-white'>
+                <div className='text-3xl max-w-[70%] md:max-w-sm md:text-4xl z-20 font-semibold text-left'>
+                  {slide.name}
+                </div>
+                <p className='text-left max-w-[350px]'>{slide.description}</p>
+                <div className='flex'>
+                  <button className='bg-red-500 text-white px-4 py-2 mt-4 shadow-sm'>
+                    See more
+                  </button>
+                </div>
               </div>
-              <p className='text-left max-w-[350px]'>{slide.description}</p>
-              <div className='flex'>
-                <button className='bg-red-500 text-white px-4 py-2 mt-4 shadow-sm'>
-                  See more
-                </button>
-              </div>
-            </div>
+            </Link>
           </div>
         ))}
       </div>
